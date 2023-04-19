@@ -12,6 +12,7 @@ export default function ContactForm({ onFormSubmit }) {
   const [number, setNumber] = useState('');
 
   const handleChange = e => {
+    dispatch(fetchContacts());
     const { name, value } = e.currentTarget;
     switch (name) {
       case 'name':
@@ -37,7 +38,6 @@ export default function ContactForm({ onFormSubmit }) {
     setName('');
     setNumber('');
     toast('Wow so easy!');
-    dispatch(fetchContacts());
   };
 
   return (

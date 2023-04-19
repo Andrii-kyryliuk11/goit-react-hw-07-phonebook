@@ -9,6 +9,7 @@ import { addContact, fetchContacts } from 'redux/operation';
 export default function App() {
   const dispatch = useDispatch();
   const contacts = useSelector(store => store.contacts.items);
+
   // const [contacts, setContacts] = useState(() => {
   //   return JSON.parse(localStorage.getItem('contacts')) || [];
   // });
