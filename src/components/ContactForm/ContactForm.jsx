@@ -1,7 +1,13 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import css from './ContactForm.module.css';
+import { addContact, fetchContacts } from '../../redux/operation';
+import { useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ContactForm({ onFormSubmit }) {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -25,9 +31,13 @@ export default function ContactForm({ onFormSubmit }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    onFormSubmit(name, number);
+    const contactToAdd = { name: name, number: number };
+    dispatch(addContact(contactToAdd));
+    // onFormSubmit(name, number);
     setName('');
     setNumber('');
+    toast('Wow so easy!');
+    dispatch(fetchContacts());
   };
 
   return (
@@ -53,6 +63,7 @@ export default function ContactForm({ onFormSubmit }) {
       <button className={css.button__submit} type="submit">
         Add contact
       </button>
+      <ToastContainer />
     </form>
   );
 }
