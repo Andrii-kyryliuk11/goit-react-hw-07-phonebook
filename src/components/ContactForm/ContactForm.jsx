@@ -1,18 +1,17 @@
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import css from './ContactForm.module.css';
 import { addContact, fetchContacts } from '../../redux/operation';
-import { useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-export default function ContactForm({ onFormSubmit }) {
+export function ContactForm() {
   const dispatch = useDispatch();
+  const isLoading = useSelector(store => store.contacts.isLoading);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const handleChange = e => {
-    dispatch(fetchContacts());
     const { name, value } = e.currentTarget;
     switch (name) {
       case 'name':
@@ -33,11 +32,12 @@ export default function ContactForm({ onFormSubmit }) {
   const handleSubmit = e => {
     e.preventDefault();
     const contactToAdd = { name: name, number: number };
-    dispatch(addContact(contactToAdd));
-    // onFormSubmit(name, number);
+    dispatch(addContact(contactToAdd)).then(toast.success('Contact added'));
     setName('');
     setNumber('');
-    toast('Wow so easy!');
+    setTimeout(() => {
+      dispatch(fetchContacts());
+    }, 700);
   };
 
   return (
@@ -60,10 +60,9 @@ export default function ContactForm({ onFormSubmit }) {
         required
         onChange={handleChange}
       />
-      <button className={css.button__submit} type="submit">
+      <button className={css.button__submit} type="submit" disabled={isLoading}>
         Add contact
       </button>
-      <ToastContainer />
     </form>
   );
 }

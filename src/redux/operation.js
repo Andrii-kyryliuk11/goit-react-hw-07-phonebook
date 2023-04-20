@@ -9,7 +9,7 @@ export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
 export const addContact = createAsyncThunk(
   'contacts/addContact',
   async contact => {
-    contactsApi.addContact(contact);
+    await contactsApi.addContact(contact);
   }
 );
 

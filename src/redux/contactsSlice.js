@@ -1,4 +1,4 @@
-import { createSlice, createReducer, combineReducers } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { fetchContacts, deleteContact, addContact } from './operation';
 
 export const contactsSlice = createSlice({
@@ -10,36 +10,21 @@ export const contactsSlice = createSlice({
   },
   extraReducers: {
     [fetchContacts.fulfilled]: (state, action) =>
-      (state = { ...state, items: action.payload }),
+      (state = { items: action.payload, isLoading: false, error: null }),
     [fetchContacts.rejected]: (state, action) =>
       (state = { ...state, error: action.payload }),
     [fetchContacts.pending]: (state, action) =>
-      (state = { ...state, isLoading: false }),
+      (state = { ...state, isLoading: true }),
     [deleteContact.pending]: (state, action) =>
       (state = { ...state, isLoading: true }),
-    [deleteContact.fulfilled]: (state, action) =>
-      (state = { ...state, isLoading: false }),
+    [deleteContact.fulfilled]: (state, action) => {
+      return (state = { ...state });
+    },
     [addContact.pending]: (state, action) =>
       (state = { ...state, isLoading: true }),
-    [addContact.fulfilled]: (state, action) =>
-      (state = { ...state, isLoading: false }),
+    [addContact.fulfilled]: (state, action) => {
+      return (state = { ...state });
+    },
   },
 });
-// const items = createReducer([], {
-//   [fetchContacts.fulfilled]: (_, action) => action.payload,
-// });
-// const isLoading = createReducer(false, {
-//   [fetchContacts.pending]: true,
-//   [fetchContacts.fulfilled]: false,
-//   [fetchContacts.rejected]: false,
-// });
 
-// const error = createReducer(null, {
-//   [fetchContacts.fulfilled]: (_, action) => action.payload,
-//   [fetchContacts.pending]: null,
-// });
-// export default combineReducers({
-//   items,
-//   isLoading,
-//   error,
-// });

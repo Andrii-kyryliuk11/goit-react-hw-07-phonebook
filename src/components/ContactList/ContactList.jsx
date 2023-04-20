@@ -1,22 +1,17 @@
-import { useEffect } from 'react';
 import css from './ContactList.module.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { fetchContacts, deleteContact } from '../../redux/operation';
-import { useRef } from 'react';
 
 export const ContactList = ({ data }) => {
   const dispatch = useDispatch();
-  const contacts = useSelector(store => store.contacts.items);
   const isLoading = useSelector(store => store.contacts.isLoading);
-
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
 
   return (
     <ul>
-      {contacts !== [] &&
-        contacts.map(({ name, number, id }, i) => {
+      {data !== [] &&
+        data.map(({ name, number, id }, i) => {
           return (
             <li key={id}>
               <span>
@@ -26,8 +21,14 @@ export const ContactList = ({ data }) => {
                 className={css.button}
                 type="button"
                 onClick={() => {
-                  dispatch(deleteContact(id));
+                  dispatch(deleteContact(id)).then(
+                    toast.success('Contact deleted')
+                  );
+                  setTimeout(() => {
+                    dispatch(fetchContacts());
+                  }, 500);
                 }}
+                disabled={isLoading}
               >
                 Delete
               </button>
